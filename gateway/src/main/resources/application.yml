@@ -1,0 +1,40 @@
+server:
+  port: 8084 # Gateway port
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service-route
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/u/**
+          filters:
+            - StripPrefix=2
+      
+        - id: catalog-service-route
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/c/**
+          filters:
+            - StripPrefix=2
+
+        # - id: catalog-service-route
+        #   uri: http://localhost:8083
+        #   predicates:
+        #     - Path=/catalog/**
+        #   filters:
+        #     - name: StripPrefixPath
+        #       args:
+        #         parts: 1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
