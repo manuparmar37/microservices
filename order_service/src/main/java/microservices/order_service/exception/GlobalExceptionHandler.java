@@ -1,4 +1,4 @@
-package microservices.catalog_service.exception;
+package microservices.order_service.exception;
 
 import java.time.LocalDateTime;
 
@@ -10,24 +10,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     // specific
-    @ExceptionHandler(SaveException.class)
-    public ResponseEntity<ErrorDetails> handleSaveException(AccountException ex, WebRequest webRequest) {
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleSaveException(ProductNotFoundException ex, WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
-                webRequest.getDescription(false), "FAILED_TO_SAVE_IN_DB");
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    // specific
-    @ExceptionHandler(EmptyException.class)
-    public ResponseEntity<ErrorDetails> handleEmptyException(EmptyException ex, WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(),
-                webRequest.getDescription(false), "NOT_FOUND");
+                webRequest.getDescription(false), "PRODUCT_NOT_FOUND");
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 

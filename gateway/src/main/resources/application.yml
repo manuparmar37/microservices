@@ -18,6 +18,13 @@ spring:
             - Path=/api/c/**
           filters:
             - StripPrefix=2
+        
+        - id: order-service-route
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/o/**
+          filters:
+            - StripPrefix=2
 
         # - id: catalog-service-route
         #   uri: http://localhost:8083

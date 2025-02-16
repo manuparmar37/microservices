@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -25,8 +26,13 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductDto>> getProductPath() {
+    public ResponseEntity<List<ProductDto>> getProducts() {
         return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
     @PostMapping("/products")
@@ -38,5 +44,11 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.ok("Deleted Successfully");
+    }
+
+    @PutMapping("/products/{id}/stock")
+    public ResponseEntity<Void> decreaseStock(@PathVariable Long id) {
+        productService.decreaseProductStock(id);
+        return ResponseEntity.noContent().build();
     }
 }
